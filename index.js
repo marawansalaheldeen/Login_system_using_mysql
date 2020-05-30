@@ -1,12 +1,12 @@
 require('dotenv').config();
 const express = require('express');
+const userRouter = require('./api/router');
 
 const app = express();
 
+app.use(express.json());
+app.use(userRouter);
 
-app.get('/',(req,res)=>{
-    res.send("<h1>NODE APP</h1>");
-});
 
 const port = process.env.PORT || 3000;
 app.listen(port,()=>{
