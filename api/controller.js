@@ -15,9 +15,8 @@ const createUser = async (req,res)=>{
 
     await create(sqldata,(error,response)=>{
         if(error){
-            console.log(error);
              res.status(500).send(error);
-        }
+        };
          res.status(201).send(response);
     });
 };
@@ -26,10 +25,10 @@ const getAllUsers =async (req,res)=>{
     await getUsers((error,response)=>{
         if(error){
          res.status(500).send();
-        }
+        };
         res.status(200).send(response);
-    })
-}
+    });
+};
 
 const findUserById = async (req,res)=>{
     const id = req.params.id;
@@ -38,10 +37,10 @@ const findUserById = async (req,res)=>{
         if(error){
             console.log(error);
             return;
-        }
+        };
         if(!response){
-            res.status(404).send("user not found")
-        }
+            res.status(404).send("user not found");
+        };
         res.send(response);
         
     });
@@ -52,36 +51,34 @@ const removingUser = async(req,res)=>{
     await deleteUserById(id,(error,response)=>{
         if(error){
             res.status(500).send();
-        }
+        };
         if(!response){
             res.status(404).send("user not found to delete");
-        }
+        };
         res.send(response)
         console.log('user deleted');
-    })
-}
+    });
+};
 
 const updateUserById =async(req,res)=>{
     const id = req.params.id;
-    const salt = bcrypt.genSaltSync(10);
-    const hashedpassword = bcrypt.hashSync(req.body.password,salt);
-    const sqldata = {
+
+    const data = {
         firstname:req.body.firstname,
         lastname:req.body.lastname,
-        email:req.body.email,
-        password:hashedpassword
-    }
+        email:req.body.email
+    };
 
-    await updatUser(id,sqldata,(error,response)=>{
+    await updatUser(id,data,(error,response)=>{
         if(error){
             res.status(500).send();
-        }
+        };
         if(!response){
             res.status(404).send("user not found");
-        }
-        res.send(response)
-    })
-}
+        };
+        res.send(response);
+    });
+};
 
 module.exports = {
     createUser,

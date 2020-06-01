@@ -7,6 +7,7 @@ router.post('/',createUser);
 router.get('/',getAllUsers);
 router.get('/user/:id',findUserById);
 router.delete('/user/:id',removingUser);
-router.patch('/user/:id',updateUserById)
+router.patch('/user/:id',updateUserById);
+
 module.exports = router;
 
