@@ -1,6 +1,12 @@
-const { create,getUsers,getUserById,deleteUserById,updatUser } = require('./userservice');
+const {
+     create,
+     getUsers,
+     getUserById,
+     deleteUserById,
+     updatUser,
+     getUserByEmail } = require('./userservice');
 const bcrypt = require('bcryptjs');
-
+const jwt = require('jsonwebtoken');
 const createUser = async (req,res)=>{
     const salt = bcrypt.genSaltSync(10);
     const hashedpassword = bcrypt.hashSync(req.body.password,salt);
@@ -80,11 +86,42 @@ const updateUserById =async(req,res)=>{
     });
 };
 
+const login =async (req,res)=>{
+    const email = req.body.email;
+    const password = req.body.password;
+    console.log(password)
+    await getUserByEmail(email,(error,response)=>{
+        if(error){
+            res.status(500).send();
+        };
+        if(!response){
+           return res.status(404).send("user not found");
+        }
+        const result = bcrypt.compareSync(password,response.password);
+        if(result){
+            //response.password = undefined;
+            const token = jwt.sign({_id:response.id},'qwu12345');
+            return res.json({
+                success:1,
+                message:"login successfully",
+                token:token
+            })
+        }else{
+            return res.json({
+                success:0,
+                message:"wrong email or password"
+            })
+        }
+    })
+}
+
+
 module.exports = {
     createUser,
     getAllUsers,
     findUserById,
     removingUser,
-    updateUserById
+    updateUserById,
+    login
 }
 

@@ -54,11 +54,22 @@ const updatUser = (id,data,callBack)=>{
     });
 };
 
+const getUserByEmail = (email,callBack)=>{
+    db.query("SELECT * FROM users WHERE email = ?",[email],(error,response)=>{
+        if(error){
+            callBack(error);
+        };
+        console.log(response[0])
+        callBack(null,response[0]);
+    });
+};
+
 
 module.exports = {
     create,
     getUsers,
     getUserById,
     deleteUserById,
-    updatUser
+    updatUser,
+    getUserByEmail
 };
