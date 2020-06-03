@@ -5,15 +5,17 @@ const {
     removingUser,
     updateUserById,
     login } = require('./controller');
+
 const express = require('express');
+const {checkToken}=require('../auth/tokenvalidation');
 const router = express.Router();
 
-
-router.post('/',createUser);
-router.get('/',getAllUsers);
-router.get('/user/:id',findUserById);
-router.delete('/user/:id',removingUser);
-router.patch('/user/:id',updateUserById);
+router.post('/',checkToken,createUser);
+router.get('/',checkToken,getAllUsers);
+router.get('/user/:id',checkToken,findUserById);
+router.delete('/user/:id',checkToken,removingUser);
+router.patch('/user/:id',checkToken,updateUserById);
 router.post('/user/login',login);
+
 module.exports = router;
 
